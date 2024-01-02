@@ -34,7 +34,7 @@ def get_filters():
             break
         else:
             print("You have not entered a valid month")
-    
+
     # get user input for day of week (all, monday, tuesday, ... sunday)
     while True:
         day_of_week = ['All', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -74,7 +74,7 @@ def load_data(city, month, day):
         # use the index of the months list to get the corresponding int
         months = ['january', 'february', 'march', 'april', 'may', 'june']
         month = months.index(month) + 1
-    
+
         # filter by month to create the new dataframe
         df = df[df['month'] == month]
 
@@ -127,8 +127,8 @@ def station_stats(df):
     df['comb_station']=df['Start Station'] + " and " + df['End Station']
     com_comb_station = df['comb_station'].mode()[0]
     print (' Most common combination of Station used is {}'.format(com_comb_station))
-    
-    
+
+
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
@@ -183,6 +183,30 @@ def user_stats(df):
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
+def view_more_data(df):
+    while True:
+        more= input("Would you like to view 5 lines of raw data? Type 'Y' or 'N': ").upper()
+        if more == 'Y':
+            start=0
+            end=5
+            raw_data = df.iloc[start:end,:9]
+            print('printing 5 lines of raw data: \n {}'.format(raw_data))
+            break
+        elif more == 'N':
+            break
+        else:
+            print("Please enter a valid response")
+    if  more== 'Y':
+            while True:
+                more_view = input("Would you like to view more trip data? Type 'Y' or 'N' : ").upper()
+                if more_view == 'Y':
+                    start+=5
+                    end+=5
+                    data = df.iloc[start:end,:9]
+                    print(data)
+                else:
+                    break
+
 
 def main():
     while True:
@@ -193,6 +217,7 @@ def main():
         station_stats(df)
         trip_duration_stats(df)
         user_stats(df)
+        view_more_data(df)
 
         restart = input('\nWould you like to restart? Enter yes or no.\n')
         if restart.lower() != 'yes':
